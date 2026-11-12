@@ -1,0 +1,35 @@
+# Automação n8n: leitura de PDFs de RH com IA
+
+Fluxo no n8n que recebe um PDF de rescisão por formulário, extrai o texto, envia ao Gemini e recebe os campos organizados em JSON. Se um campo não existir no documento, a IA devolve `null`, sem inventar dados.
+
+## Como funciona
+
+1. **Formulário:** o usuário envia o PDF pelo formulário do n8n.
+2. **Extrair do arquivo:** o n8n lê o texto do PDF.
+3. **Gemini:** recebe o texto e devolve nome, CPF, cargo, datas, motivo e valor líquido.
+
+## Resultado de teste
+
+Testado com `trct_01.pdf` (documento completo) e `trct_03_incompleto.pdf`:
+- Documento completo: os dados foram extraídos corretamente.
+- Documento incompleto: CPF e valor líquido vieram como `null`, como esperado.
+
+## Arquivos
+
+- `workflows/SmartDocs n8n.json`: fluxo exportado do n8n, para importar em outra conta.
+- `exemplos/`: PDFs fictícios de teste.
+
+## Como importar
+
+1. No n8n, crie um novo fluxo.
+2. Clique nos três pontinhos e escolha **Importar**.
+3. Selecione o arquivo `workflows/SmartDocs n8n.json`.
+4. Configure sua própria credencial do Gemini. A chave não vem junto com o fluxo.
+
+## Aviso
+
+Todos os documentos são fictícios. Não use dados reais de pessoas.
+
+## Projeto relacionado
+
+Este fluxo é a versão em n8n do projeto [SmartDocs AI](https://github.com/pedrohgm2107-blip/SmartDocs-AI), feito em Python.
