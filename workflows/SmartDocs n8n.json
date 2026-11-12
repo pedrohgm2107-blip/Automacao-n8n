@@ -74,6 +74,19 @@
       ],
       "id": "489fe77f-e6d8-4573-97cf-4114186377b5",
       "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "const texto = $input.first().json.content.parts[0].text;\nconst dados = JSON.parse(texto.replace(/```json|```/g, '').trim());\nconst faltando = ['cpf', 'valor_liquido'].filter(campo => !dados[campo]);\nreturn [{\n  json: {\n    ...dados,\n    status: faltando.length ? 'INCOMPLETO' : 'OK',\n    campos_faltando: faltando.join(', ')\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        128
+      ],
+      "id": "6a945073-b69b-4332-94a7-e82b91c14588",
+      "name": "Code in JavaScript"
     }
   ],
   "pinData": {},
@@ -99,6 +112,17 @@
           }
         ]
       ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -106,7 +130,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "2c19222f-0ea0-43cb-9e8c-5ee8a23811ad",
+  "versionId": "f972a647-c4b3-413e-a1fc-a489877d811d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "4edcc581b3f58d4b08d317c56924874ee2eedab0c6b8f5507f135edfe1927974"
