@@ -1,0 +1,117 @@
+{
+  "name": "SmartDocs n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3.5-flash-lite",
+          "mode": "list",
+          "cachedResultName": "Gemini 3.5 Flash Lite"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Extraia os dados deste documento e devolva somente um JSON com as chaves nome, cpf, cargo, data_admissao, data_desligamento, motivo e valor_liquido. Se algum campo não existir no documento, use null. Não invente nada.\n\nDocumento:\n\n{{ $json.text }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        528,
+        0
+      ],
+      "id": "e956dbee-3e93-4dab-8653-2e463aed3375",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "jXckPEnjs8eeTh2R",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Envio de PDF",
+        "formDescription": "Documento PDF",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "documento_pdf",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "908ec817-c39c-4ba6-bca8-0b80a5b3fdba",
+      "name": "On form submission",
+      "webhookId": "e8aeb3df-997d-4415-b593-c5ef88c930f9"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "documento_pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        0
+      ],
+      "id": "489fe77f-e6d8-4573-97cf-4114186377b5",
+      "name": "Extract from File"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2c19222f-0ea0-43cb-9e8c-5ee8a23811ad",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4edcc581b3f58d4b08d317c56924874ee2eedab0c6b8f5507f135edfe1927974"
+  },
+  "nodeGroups": [],
+  "id": "43TktYGSMdQ4T6TL",
+  "tags": []
+}
